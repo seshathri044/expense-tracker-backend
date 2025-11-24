@@ -1,5 +1,6 @@
 # 💰 ExpenseTracker Backend API
 
+
 A production-ready Spring Boot REST API for personal finance management with JWT authentication, expense/income tracking, real-time analytics, and comprehensive CRUD operations. Built with Spring Security, MySQL, and modern best practices.
 
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen.svg)](https://spring.io/projects/spring-boot)
