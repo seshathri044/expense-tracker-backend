@@ -28,15 +28,11 @@ A production-ready Spring Boot REST API for personal finance management with JWT
 - 🔐 JWT-based authentication
 - 🔑 Secure password encryption
 - 👤 User registration and login
-- 🔄 Token refresh mechanism
-- 📧 Email notifications
-- 🔒 Role-based access control
 
 ### Expense Management
 - ➕ Create, read, update, and delete expenses
 - 🏷️ Categorize expenses
 - 📊 Track spending patterns
-- 🔍 Filter and search expenses
 - 📅 Date-based expense tracking
 
 ### Income Management
@@ -52,8 +48,6 @@ A production-ready Spring Boot REST API for personal finance management with JWT
 
 ### User Profile
 - 👤 User profile management
-- ⚙️ Account settings
-- 📧 Email preferences
 
 ## 🛠️ Tech Stack
 
