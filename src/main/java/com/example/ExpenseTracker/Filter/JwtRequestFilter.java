@@ -28,14 +28,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final AppUserDetialsService appUserDetialsService;
     private final JwtUtil jwtUtil;
 
-    // Paths WITHOUT /api/v1.0 prefix (context path is stripped by Spring)
     private static final List<String> PUBLIC_URLS = Arrays.asList(
             "/login",
             "/register",
             "/send-reset-otp",
             "/reset-password",
             "/verify-otp",
+            "/send-otp",
             "/logout",
+            "/is-authenticated",
             "/error"
     );
 
@@ -105,7 +106,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 }
             } catch (Exception e) {
                 log.error("JwtRequestFilter: JWT validation error: {}", e.getMessage());
-                // Don't throw exception, just continue without authentication
             }
         } else {
             log.debug("JwtRequestFilter: No JWT token found for protected endpoint: {}", servletPath);

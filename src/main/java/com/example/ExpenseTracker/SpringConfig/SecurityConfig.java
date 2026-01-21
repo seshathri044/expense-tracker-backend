@@ -34,7 +34,8 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        // Public authentication endpoints
+                        // ✅ CRITICAL FIX: Export endpoints WITHOUT /api prefix
+                        // Since context path is /api, Spring Security sees paths as /export/csv
                         .requestMatchers(
                                 "/login",
                                 "/register",
@@ -46,7 +47,7 @@ public class SecurityConfig {
                                 "/is-authenticated",
                                 "/error"
                         ).permitAll()
-                        // Swagger UI endpoints (if needed)
+                        // Swagger UI endpoints
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
@@ -75,7 +76,7 @@ public class SecurityConfig {
         configuration.setAllowedOriginPatterns(List.of("*"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
-        configuration.setExposedHeaders(List.of("Set-Cookie", "Authorization"));
+        configuration.setExposedHeaders(List.of("Set-Cookie", "Authorization", "Content-Disposition")); // ✅ Added Content-Disposition for file downloads
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
 

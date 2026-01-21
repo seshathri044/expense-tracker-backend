@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+  # =========================
+  # MySQL Database Service
+  # =========================
+  mysql:
+    image: mysql:8.0
+    container_name: expense-tracker-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: expense_tracker
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3307:3306"  # Using 3307 on host to avoid conflict with local MySQL
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - expense-tracker-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # =========================
+  # Spring Boot Application
+  # =========================
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: expense-tracker-backend
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      # Database Configuration
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/expense_tracker?useSSL=false&serverTimezone=Asia/Kolkata&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+
+      # JWT Configuration
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+
+      # Email Configuration
+      SPRING_MAIL_USERNAME: ${MAIL_USERNAME}
+      SPRING_MAIL_PASSWORD: ${MAIL_PASSWORD}
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_FROM: ${MAIL_FROM}
+
+      # Server Configuration
+      SERVER_PORT: 8080
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}
+
+      # JPA Configuration
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: false
+    ports:
+      - "8080:8080"
+    networks:
+      - expense-tracker-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/api/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+# =========================
+# Networks
+# =========================
+networks:
+  expense-tracker-network:
+    driver: bridge
+
+# =========================
+# Volumes
+# =========================
+volumes:
+  mysql_data:
+    driver: local

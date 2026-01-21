@@ -1,10 +1,44 @@
+# =========================
+# CRITICAL: Environment & Secret Files
+# =========================
+.env
+.env.*
+.env.local
+.env.production
+.env.*.local
+*.env
+
+# Application specific properties with secrets
+application-local.properties
+application-*.local.properties
+
+# =========================
+# Build & Maven
+# =========================
 HELP.md
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
 
-### STS ###
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+*.log.*
+
+# =========================
+# STS ###
+# =========================
 .apt_generated
 .classpath
 .factorypath
@@ -13,13 +47,18 @@ target/
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
+# =========================
+# IntelliJ IDEA
+# =========================
 .idea
 *.iws
 *.iml
 *.ipr
+out/
 
-### NetBeans ###
+# =========================
+# NetBeans
+# =========================
 /nbproject/private/
 /nbbuild/
 /dist/
@@ -29,5 +68,40 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### VS Code ###
+# =========================
+# VS Code
+# =========================
 .vscode/
+
+# =========================
+# OS Files
+# =========================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*~
+
+# =========================
+# Compiled Files
+# =========================
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# =========================
+# Temporary Files
+# =========================
+*.tmp
+*.bak
+*.swp
+*.swo
+*~.nib
+*.orig

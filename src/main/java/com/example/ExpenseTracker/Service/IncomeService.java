@@ -6,14 +6,14 @@ import com.example.ExpenseTracker.Entity.Income;
 import java.util.List;
 
 public interface IncomeService {
+    // 🔥 UPDATED: All methods now require userId
+    Income postIncome(IncomeDTO incomeDTO, Long userId);
 
-    Income postIncome(IncomeDTO incomeDTO);
+    List<IncomeDTO> getAllIncomes(Long userId);
 
-    List<IncomeDTO> getAllIncomes();
+    Income updateIncome(Long id, IncomeDTO incomeDTO, Long userId);
 
-    Income updateIncome(Long id, IncomeDTO incomeDTO);
+    IncomeDTO getIncomeById(Long id, Long userId);
 
-    IncomeDTO getIncomeById(Long id);
-
-    void deleteIncome(Long id);
+    void deleteIncome(Long id, Long userId);
 }

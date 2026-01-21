@@ -5,25 +5,43 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "income")
 @Data
 public class Income {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-        private String title;
+    private String title;
 
-        private Integer amount;
+    private Double amount;
 
-        private LocalDate date;
+    private LocalDate date;
 
-        private String category;
+    private String category;
 
-        private String description;
+    private String description;
 
-        public IncomeDTO getIncomeDTO(){
+    // 🔥 NEW: Add userId to link income to users
+    @Column(name = "user_id")
+    private Long userId;
+
+    // 🔥 NEW: Add notes field (matches expense table)
+    private String notes;
+
+    // 🔥 NEW: Track creation time
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+
+    public IncomeDTO getIncomeDTO() {
         IncomeDTO incomeDTO = new IncomeDTO();
         incomeDTO.setId(id);
         incomeDTO.setTitle(title);
@@ -34,5 +52,4 @@ public class Income {
 
         return incomeDTO;
     }
-
 }

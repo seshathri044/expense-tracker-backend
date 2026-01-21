@@ -9,7 +9,7 @@ public class IncomeDTO {
 
     private String title;
 
-    private Integer amount;
+    private Double amount;
 
     private LocalDate date;
 
