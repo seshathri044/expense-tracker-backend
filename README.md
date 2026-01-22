@@ -1,491 +1,628 @@
-# 💰 ExpenseTracker - Flutter Frontend
+# 💰 ExpenseTracker Backend API
 
-A production-ready Flutter mobile application for comprehensive personal finance management. Built with Provider state management, JWT authentication, and seamless integration with Spring Boot REST API backend for real-time expense tracking, income management, and financial analytics.
+> A production-ready Spring Boot REST API for personal finance management with JWT authentication, expense/income tracking, real-time analytics, and comprehensive CRUD operations. Built with Spring Security, MySQL, and modern best practices.
 
-> **Backend Repository**: [ExpenseTracker Spring Boot API](https://github.com/seshathri044/expense-tracker-backend)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen.svg)](https://spring.io/projects/spring-boot)
+[![Java](https://img.shields.io/badge/Java-17+-orange.svg)](https://www.oracle.com/java/)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0-blue.svg)](https://www.mysql.com/)
+[![JWT](https://img.shields.io/badge/JWT-Authentication-red.svg)](https://jwt.io/)
 
-## ✨ Key Features
+## 📋 Table of Contents
 
-### 🔐 Authentication & Security
-- **JWT Token Authentication** - Secure stateless authentication
-- **Email OTP Verification** - Two-step registration process
-- **Password Reset Flow** - Email-based OTP password recovery  
-- **Secure Token Storage** - Encrypted credential management with SharedPreferences
-- **Auto Token Refresh** - Seamless session management
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [API Documentation](#api-documentation)
+- [Database Schema](#database-schema)
+- [Security](#security)
+- [Contributing](#contributing)
+- [License](#license)
 
-### 💸 Expense Management
-- **CRUD Operations** - Create, read, update, and delete expenses
-- **Category Organization** - Organize expenses by customizable categories
-- **Date-Based Tracking** - Track expenses with precise date filtering
-- **Detailed Descriptions** - Add notes and descriptions to each expense
-- **Real-Time Updates** - Instant UI updates using Provider state management
+## ✨ Features
 
-### 💵 Income Tracking
-- **Multiple Income Sources** - Track income from various sources
-- **Income Categories** - Categorize income (salary, freelance, investments, etc.)
-- **Historical Records** - Complete income history with date filtering
-- **Income vs Expense Analysis** - Compare earnings against spending
+### Authentication & Authorization
+- 🔐 JWT-based authentication
+- 🔑 Secure password encryption
+- 👤 User registration and login
+- 🔄 Token refresh mechanism
+- 📧 Email notifications
+- 🔒 Role-based access control
 
-### 📊 Statistics & Analytics
-- **All-Time Overview** - Total income, expenses, and balance summary
-- **Monthly Reports** - Current month income/expense breakdown
-- **Top 3 Categories** - See your highest spending categories
-- **Yearly Analysis** - Month-by-month trends for any selected year
-- **Category Breakdown** - Detailed spending analysis by category with percentages
-- **Visual Charts** - Interactive data visualization (ready for chart integration)
+### Expense Management
+- ➕ Create, read, update, and delete expenses
+- 🏷️ Categorize expenses
+- 📊 Track spending patterns
+- 🔍 Filter and search expenses
+- 📅 Date-based expense tracking
 
-### 👤 User Profile
-- **Profile Management** - View and update user information
-- **Account Settings** - Manage account preferences
-- **Secure Logout** - Clean token removal and session termination
+### Income Management
+- 💵 Record income transactions
+- 📈 Track income sources
+- 📊 Income analytics
+
+### Statistics & Analytics
+- 📊 Financial statistics
+- 📉 Spending trends
+- 💹 Income vs Expense comparison
+- 📅 Monthly/Yearly reports
+
+### User Profile
+- 👤 User profile management
+- ⚙️ Account settings
+- 📧 Email preferences
 
 ## 🛠️ Tech Stack
 
-### Core Framework
-- **Flutter 3.x** - Google's UI toolkit for cross-platform development
-- **Dart 3.x** - Modern, type-safe programming language
+### Backend Framework
+- **Spring Boot 3.x** - Application framework
+- **Spring Security** - Authentication & Authorization
+- **Spring Data JPA** - Data persistence
+- **Hibernate** - ORM framework
 
-### State Management
-- **Provider 6.0+** - Lightweight, powerful state management solution
-- **ChangeNotifier** - Reactive state updates across the app
+### Database
+- **MySQL 8.0** - Primary database
+- **HikariCP** - Connection pooling
 
-### Backend Integration  
-- **HTTP Package** - RESTful API communication
-- **Spring Boot REST API** - Production backend with JWT security
-- **MySQL Database** - Persistent data storage
+### Security
+- **JWT (JSON Web Tokens)** - Stateless authentication
+- **BCrypt** - Password hashing
 
-### Local Storage
-- **SharedPreferences** - Token and user data persistence
-- **Secure Storage** - Encrypted credential storage
+### Build Tool
+- **Maven** - Dependency management
 
-### API Service Architecture
-- **ApiService** - Centralized HTTP request handler
-- **AuthService** - Authentication and user management
-- **ExpenseService** - Expense CRUD operations
-- **IncomeService** - Income management  
-- **HomeService** - Dashboard data aggregation
-- **StatisticsService** - Analytics and reporting
+### Additional Libraries
+- **Lombok** - Reduce boilerplate code
+- **ModelMapper** - Object mapping
+- **Jakarta Validation** - Input validation
 
-## 📋 Prerequisites
+## 📁 Project Structure
 
-Ensure you have the following installed:
+```
+ExpenseTracker/
+├── src/
+│   ├── main/
+│   │   ├── java/com/example/ExpenseTracker/
+│   │   │   ├── Controller/
+│   │   │   │   ├── AuthController.java
+│   │   │   │   ├── ExpenseController.java
+│   │   │   │   ├── IncomeController.java
+│   │   │   │   ├── ProfileController.java
+│   │   │   │   └── StatsController.java
+│   │   │   │
+│   │   │   ├── DTO/
+│   │   │   │   ├── ExpenseDTO.java
+│   │   │   │   ├── GraphDTO.java
+│   │   │   │   ├── IncomeDTO.java
+│   │   │   │   └── StatsDTO.java
+│   │   │   │
+│   │   │   ├── Entity/
+│   │   │   │   ├── Expense.java
+│   │   │   │   ├── Income.java
+│   │   │   │   └── UserEntity.java
+│   │   │   │
+│   │   │   ├── Filter/
+│   │   │   │   └── JwtRequestFilter.java
+│   │   │   │
+│   │   │   ├── IO/
+│   │   │   │   ├── AuthRequest.java
+│   │   │   │   ├── AuthResponse.java
+│   │   │   │   ├── ProfileRequest.java
+│   │   │   │   ├── ProfileResponse.java
+│   │   │   │   └── ResetPasswordRequest.java
+│   │   │   │
+│   │   │   ├── Repository/
+│   │   │   │   ├── ExpenseRepository.java
+│   │   │   │   ├── IncomeRepository.java
+│   │   │   │   └── UserRepository.java
+│   │   │   │
+│   │   │   ├── Service/
+│   │   │   │   ├── Stats/
+│   │   │   │   │   ├── StatsService.java
+│   │   │   │   │   └── StatsServiceImpl.java
+│   │   │   │   ├── AppUserDetailsService.java
+│   │   │   │   ├── EmailService.java
+│   │   │   │   ├── ExpenseService.java
+│   │   │   │   ├── ExpenseServiceImpl.java
+│   │   │   │   ├── IncomeService.java
+│   │   │   │   ├── IncomeServiceImpl.java
+│   │   │   │   ├── ProfileService.java
+│   │   │   │   └── ProfileServiceImpl.java
+│   │   │   │
+│   │   │   ├── SpringConfig/
+│   │   │   │   ├── CustomAuthenticationEntryPoint.java
+│   │   │   │   └── SecurityConfig.java
+│   │   │   │
+│   │   │   └── Util/
+│   │   │       └── JwtUtil.java
+│   │   │
+│   │   └── resources/
+│   │       ├── application.properties
+│   │       ├── application-dev.properties
+│   │       ├── application-prod.properties
+│   │       ├── static/
+│   │       └── templates/
+│   │
+│   └── test/
+│       └── java/com/example/ExpenseTracker/
+│
+├── .gitignore
+├── pom.xml
+└── README.md
+```
 
-- **Flutter SDK** - Version 3.0.0 or higher ([Install Flutter](https://docs.flutter.dev/get-started/install))
-- **Dart SDK** - Version 3.0.0 or higher (bundled with Flutter)
-- **Android Studio** / **VS Code** - With Flutter and Dart plugins
-- **Git** - For version control
-- **Backend API** - [ExpenseTracker Spring Boot Backend](https://github.com/seshathri044/expense-tracker-backend) running on your server
+## 📦 Prerequisites
 
-## 🚀 Installation & Setup
+Before running this application, ensure you have the following installed:
+
+- **Java 17+** - [Download](https://www.oracle.com/java/technologies/downloads/)
+- **Maven 3.6+** - [Download](https://maven.apache.org/download.cgi)
+- **MySQL 8.0+** - [Download](https://dev.mysql.com/downloads/mysql/)
+- **Git** - [Download](https://git-scm.com/downloads)
+
+## 🚀 Installation
 
 ### 1. Clone the Repository
+
 ```bash
-git clone https://github.com/seshathri044/expense-tracker-frontend.git
-cd expense-tracker-frontend
+git clone https://github.com/yourusername/expense-tracker-backend.git
+cd expense-tracker-backend
 ```
 
-### 2. Install Dependencies
-```bash
-flutter pub get
+### 2. Create MySQL Database
+
+```sql
+CREATE DATABASE expense_tracker;
 ```
 
-### 3. Configure Backend URL
+### 3. Configure Application Properties
 
-Edit `lib/config/app_config.dart` and update the base URL:
+Update `src/main/resources/application.properties`:
 
-```dart
-class AppConfig {
-  // Update this to your backend URL
-  static const String baseUrl = 'http://YOUR_BACKEND_IP:8080/api';
-  
-  // Or for production
-  static const String baseUrl = 'https://your-domain.com/api';
-  
-  // ... rest of configuration
+```properties
+# Application Name
+spring.application.name=ExpenseTracker
+
+# Database Configuration
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:mysql://localhost:3306/expense_tracker?useSSL=false&serverTimezone=Asia/Kolkata&allowPublicKeyRetrieval=true
+spring.datasource.username=root
+spring.datasource.password=YOUR_PASSWORD
+
+# JPA/Hibernate Configuration
+spring.jpa.show-sql=true
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+spring.jpa.properties.hibernate.format_sql=true
+
+# JWT Configuration
+jwt.secret.key=YOUR_SECRET_KEY_HERE
+```
+
+### 4. Build the Project
+
+```bash
+mvn clean install
+```
+
+### 5. Run the Application
+
+```bash
+mvn spring-boot:run
+```
+
+The application will start on `http://localhost:8080`
+
+## ⚙️ Configuration
+
+### Environment-Specific Properties
+
+#### Development (`application-dev.properties`)
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/expense_tracker
+spring.jpa.show-sql=true
+```
+
+#### Production (`application-prod.properties`)
+```properties
+spring.datasource.url=jdbc:mysql://your-production-db:3306/expense_tracker
+spring.jpa.show-sql=false
+```
+
+### JWT Configuration
+
+Generate a secure secret key:
+
+```bash
+openssl rand -base64 64
+```
+
+Add to your properties file:
+```properties
+jwt.secret.key=<your-generated-key>
+```
+
+## 📚 API Documentation
+
+### Base URL
+```
+http://localhost:8080
+```
+
+### Authentication Endpoints
+
+#### Register User
+```http
+POST /api/auth/register
+Content-Type: application/json
+
+{
+  "username": "john_doe",
+  "email": "john@example.com",
+  "password": "SecurePass123!"
 }
 ```
 
-**Important**: 
-- For Android emulator: Use `http://10.0.2.2:8080/api`
-- For iOS simulator: Use `http://localhost:8080/api`
-- For physical devices: Use your computer's local IP (e.g., `http://192.168.1.100:8080/api`)
+#### Login
+```http
+POST /api/auth/login
+Content-Type: application/json
 
-### 4. Run the Application
-
-```bash
-# Check available devices
-flutter devices
-
-# Run on connected device
-flutter run
-
-# Run on specific device
-flutter run -d <device-id>
-
-# Run in debug mode with hot reload
-flutter run --debug
-
-# Run in release mode (optimized)
-flutter run --release
+{
+  "email": "john@example.com",
+  "password": "SecurePass123!"
+}
 ```
 
-## 📱 Build for Production
-
-### Android APK
-```bash
-# Build release APK
-flutter build apk --release
-
-# Build split APKs by ABI (smaller file size)
-flutter build apk --split-per-abi
-
-# Output location: build/app/outputs/flutter-apk/
-```
-
-### Android App Bundle (Recommended for Play Store)
-```bash
-flutter build appbundle --release
-
-# Output location: build/app/outputs/bundle/release/
-```
-
-### iOS (macOS required)
-```bash
-# Build release IPA
-flutter build ios --release
-
-# Or build with Xcode
-open ios/Runner.xcworkspace
-# Then use Xcode to archive and export
-```
-
-## 📂 Project Structure
-
-```
-lib/
-├── config/                    # Configuration files
-│   └── app_config.dart       # API endpoints and app constants
-│
-├── models/                    # Data models
-│   ├── user_models.dart      # User and AuthResponse models
-│   ├── expense_model.dart    # Expense data model
-│   ├── income_model.dart     # Income data model  
-│   ├── stats_model.dart      # Statistics and analytics models
-│   └── api_response.dart     # Generic API response wrapper
-│
-├── providers/                 # State management (Provider)
-│   ├── auth_provider.dart    # Authentication state
-│   ├── expense_provider.dart # Expense state management
-│   ├── income_provider.dart  # Income state management
-│   └── stats_provider.dart   # Statistics state
-│
-├── screens/                   # UI screens
-│   ├── auth/                 # Authentication screens
-│   │   ├── login_screen.dart
-│   │   ├── register_screen.dart
-│   │   ├── otp_verification_screen.dart
-│   │   └── forgot_password_screen.dart
-│   ├── home/                 # Dashboard
-│   │   └── home_screen.dart
-│   ├── expense/              # Expense management
-│   │   ├── expense_list_screen.dart
-│   │   ├── add_expense_screen.dart
-│   │   └── edit_expense_screen.dart
-│   ├── income/               # Income management
-│   │   ├── income_list_screen.dart
-│   │   ├── add_income_screen.dart
-│   │   └── edit_income_screen.dart
-│   ├── statistics/           # Analytics & reports
-│   │   ├── statistics_screen.dart
-│   │   └── year_report_screen.dart
-│   ├── profile/              # User profile
-│   │   └── profile_screen.dart
-│   └── splash/               # App initialization
-│       └── splash_screen.dart
-│
-├── services/                  # Backend API services
-│   ├── api_service.dart      # Base HTTP client
-│   ├── storage_service.dart  # Local storage wrapper
-│   ├── auth_service.dart     # Authentication API calls
-│   ├── expense_service.dart  # Expense API calls
-│   ├── income_service.dart   # Income API calls
-│   ├── home_service.dart     # Dashboard data API
-│   └── statistics_service.dart # Analytics API calls
-│
-├── widgets/                   # Reusable widgets
-│   ├── common/               # Common UI components
-│   ├── charts/               # Chart widgets
-│   └── forms/                # Form components
-│
-├── utils/                     # Utility functions
-│   ├── constants.dart        # App-wide constants
-│   ├── validators.dart       # Input validation
-│   ├── date_formatter.dart   # Date utilities
-│   └── currency_formatter.dart # Currency formatting
-│
-└── main.dart                  # Application entry point
-```
-
-## 🔌 API Integration
-
-The app communicates with the Spring Boot backend through these main services:
-
-### Authentication Endpoints
-```
-POST   /api/register          - Register new user
-POST   /api/send-otp          - Send email OTP
-POST   /api/verify-otp        - Verify OTP and activate account
-POST   /api/login             - User login
-POST   /api/send-reset-otp    - Password reset OTP
-POST   /api/reset-password    - Reset password with OTP
-GET    /api/profile           - Get user profile
-POST   /api/logout            - Logout user
+**Response:**
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "userId": 1,
+  "email": "john@example.com",
+  "username": "john_doe"
+}
 ```
 
 ### Expense Endpoints
-```
-GET    /api/expense/all       - Get all expenses
-POST   /api/expense           - Create new expense
-PUT    /api/expense/:id       - Update expense
-DELETE /api/expense/:id       - Delete expense
+
+All expense endpoints require JWT authentication:
+```http
+Authorization: Bearer <your-jwt-token>
 ```
 
-### Income Endpoints  
-```
-GET    /api/income/all        - Get all incomes
-POST   /api/income            - Create new income
-PUT    /api/income/:id        - Update income
-DELETE /api/income/:id        - Delete income
-```
+#### Create Expense
+```http
+POST /api/expenses
+Content-Type: application/json
 
-### Statistics Endpoints
-```
-GET    /api/stats             - Get all-time statistics
-```
-
-## 🔑 Key Implementation Details
-
-### JWT Token Management
-- Tokens are extracted and stored after login/verification
-- Username is decoded from JWT payload for display
-- Tokens are automatically attached to authenticated requests
-- Secure logout clears all stored credentials
-
-### State Management with Provider
-```dart
-// Example: Expense Provider usage
-class ExpenseProvider extends ChangeNotifier {
-  List<Expense> _expenses = [];
-  
-  Future<void> loadExpenses() async {
-    final response = await ExpenseService().getExpenses();
-    if (response.success) {
-      _expenses = response.data!;
-      notifyListeners(); // Triggers UI rebuild
-    }
-  }
+{
+  "title": "Grocery Shopping",
+  "amount": 1500.00,
+  "date": "2024-10-23",
+  "category": "Food",
+  "description": "Weekly groceries"
 }
 ```
 
-### Error Handling
-- All API calls wrapped in try-catch blocks
-- User-friendly error messages
-- Network error detection and reporting
-- Response validation before data parsing
+#### Get All Expenses
+```http
+GET /api/expenses?page=0&size=10
+```
 
-### Date Handling  
-- Dates stored in ISO 8601 format (YYYY-MM-DD)
-- Client-side date filtering for range queries
-- Timezone-aware date comparisons
+#### Get Expense by ID
+```http
+GET /api/expenses/{id}
+```
+
+#### Update Expense
+```http
+PUT /api/expenses/{id}
+Content-Type: application/json
+
+{
+  "title": "Updated Grocery Shopping",
+  "amount": 1600.00,
+  "date": "2024-10-23",
+  "category": "Food",
+  "description": "Weekly groceries - updated"
+}
+```
+
+#### Delete Expense
+```http
+DELETE /api/expenses/{id}
+```
+
+### Income Endpoints
+
+#### Create Income
+```http
+POST /api/income
+Content-Type: application/json
+
+{
+  "title": "Monthly Salary",
+  "amount": 50000.00,
+  "date": "2024-10-01",
+  "category": "Salary",
+  "description": "October salary"
+}
+```
+
+#### Get All Income
+```http
+GET /api/income?page=0&size=10
+```
+
+#### Update Income
+```http
+PUT /api/income/{id}
+Content-Type: application/json
+```
+
+#### Delete Income
+```http
+DELETE /api/income/{id}
+```
+
+### Statistics Endpoints
+
+#### Get Dashboard Statistics
+```http
+GET /api/stats/dashboard
+```
+
+**Response:**
+```json
+{
+  "totalIncome": 50000.00,
+  "totalExpense": 25000.00,
+  "balance": 25000.00,
+  "latestIncomes": [...],
+  "latestExpenses": [...],
+  "minExpense": 100.00,
+  "maxExpense": 5000.00
+}
+```
+
+#### Get Chart Data
+```http
+GET /api/stats/chart
+```
+
+### Profile Endpoints
+
+#### Get User Profile
+```http
+GET /api/profile
+```
+
+#### Update Profile
+```http
+PUT /api/profile
+Content-Type: application/json
+
+{
+  "username": "john_doe_updated",
+  "email": "john.updated@example.com"
+}
+```
+
+#### Reset Password
+```http
+POST /api/profile/reset-password
+Content-Type: application/json
+
+{
+  "oldPassword": "OldPass123!",
+  "newPassword": "NewPass123!"
+}
+```
+
+## 🗄️ Database Schema
+
+### User Entity
+```sql
+CREATE TABLE user_entity (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+### Expense Entity
+```sql
+CREATE TABLE expense (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL,
+    amount DECIMAL(19,2) NOT NULL,
+    date DATE NOT NULL,
+    category VARCHAR(100),
+    description TEXT,
+    user_id BIGINT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES user_entity(id)
+);
+```
+
+### Income Entity
+```sql
+CREATE TABLE income (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL,
+    amount DECIMAL(19,2) NOT NULL,
+    date DATE NOT NULL,
+    category VARCHAR(100),
+    description TEXT,
+    user_id BIGINT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES user_entity(id)
+);
+```
+
+## 🔒 Security
+
+### Authentication Flow
+
+1. User registers/logs in with credentials
+2. Server validates credentials
+3. Server generates JWT token
+4. Client stores token (localStorage/sessionStorage)
+5. Client includes token in Authorization header for subsequent requests
+6. Server validates token and processes request
+
+### Password Security
+
+- Passwords are hashed using **BCrypt** algorithm
+- Minimum password requirements enforced
+- Secure password reset mechanism
+
+### CORS Configuration
+
+Configure allowed origins in `SecurityConfig.java`:
+
+```java
+@Bean
+public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+    configuration.setAllowedHeaders(Arrays.asList("*"));
+    configuration.setAllowCredentials(true);
+    
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
+}
+```
 
 ## 🧪 Testing
 
-### Run Unit Tests
+### Run Tests
+
 ```bash
-flutter test
+mvn test
 ```
 
-### Run Widget Tests
+### Test Coverage
+
 ```bash
-flutter test test/widget_test.dart
+mvn clean test jacoco:report
 ```
 
-### Run Integration Tests
+## 🐛 Error Handling
+
+The API uses standard HTTP status codes:
+
+| Status Code | Description |
+|------------|-------------|
+| 200 | Success |
+| 201 | Created |
+| 400 | Bad Request |
+| 401 | Unauthorized |
+| 403 | Forbidden |
+| 404 | Not Found |
+| 500 | Internal Server Error |
+
+### Error Response Format
+
+```json
+{
+  "timestamp": "2024-10-23T10:15:30",
+  "status": 400,
+  "error": "Bad Request",
+  "message": "Invalid input data",
+  "path": "/api/expenses"
+}
+```
+
+## 📈 Performance Optimization
+
+- **Connection Pooling**: HikariCP for efficient database connections
+- **Pagination**: Implemented for large datasets
+- **Caching**: Strategic caching for frequently accessed data
+- **Lazy Loading**: Hibernate lazy loading for optimal performance
+
+## 🚀 Deployment
+
+### Docker Deployment
+
+Create a `Dockerfile`:
+
+```dockerfile
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+COPY target/expense-tracker-0.0.1-SNAPSHOT.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
+```
+
+Build and run:
+
 ```bash
-flutter drive --target=test_driver/app.dart
+docker build -t expense-tracker-backend .
+docker run -p 8080:8080 expense-tracker-backend
 ```
 
-### Generate Coverage Report
-```bash
-flutter test --coverage
-genhtml coverage/lcov.info -o coverage/html
-open coverage/html/index.html
-```
+### Cloud Deployment
 
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**1. Cannot connect to backend**
-```
-Error: SocketException: Failed to connect
-Solution: Check your app_config.dart baseUrl matches your backend server
-```
-
-**2. Token expired errors**
-```
-Error: 401 Unauthorized
-Solution: Logout and login again to refresh token
-```
-
-**3. Date parsing errors**
-```
-Error: FormatException: Invalid date format
-Solution: Ensure backend returns dates in YYYY-MM-DD format
-```
-
-**4. Flutter pub get fails**
-```bash
-# Clean and reinstall dependencies
-flutter clean
-flutter pub get
-```
-
-**5. Build errors on iOS**
-```bash
-# Clean iOS build
-cd ios
-pod deintegrate
-pod install
-cd ..
-flutter clean
-flutter build ios
-```
-
-## 📦 Dependencies
-
-Key packages used in this project:
-
-```yaml
-dependencies:
-  flutter:
-    sdk: flutter
-    
-  # State Management
-  provider: ^6.1.1
-  
-  # HTTP & API
-  http: ^1.1.0
-  
-  # Local Storage  
-  shared_preferences: ^2.2.2
-  
-  # UI Components
-  flutter_svg: ^2.0.9
-  google_fonts: ^6.1.0
-  
-  # Date & Time
-  intl: ^0.19.0
-  
-  # Charts (when implemented)
-  fl_chart: ^0.65.0
-```
+The application is ready to deploy on:
+- **AWS EC2**
+- **Heroku**
+- **Google Cloud Platform**
+- **Azure**
 
 ## 🤝 Contributing
 
 Contributions are welcome! Please follow these steps:
 
-1. **Fork the repository**
-2. **Create a feature branch**
-   ```bash
-   git checkout -b feature/amazing-feature
-   ```
-3. **Commit your changes**
-   ```bash
-   git commit -m 'Add amazing feature'
-   ```
-4. **Push to the branch**
-   ```bash
-   git push origin feature/amazing-feature
-   ```
-5. **Open a Pull Request**
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-### Coding Guidelines
-- Follow Flutter's official style guide
+### Code Style
+
+- Follow Java naming conventions
 - Write meaningful commit messages
 - Add comments for complex logic
-- Update documentation for new features
-- Test thoroughly before submitting PR
+- Write unit tests for new features
 
-## 📸 Screenshots
-
-> Add screenshots of your app here:
-- Login/Registration screens
-- Dashboard with statistics  
-- Expense list and add expense forms
-- Income tracking screens
-- Analytics and reports
-- User profile
-
-## 🔐 Security Considerations
-
-- ✅ JWT tokens stored securely in SharedPreferences
-- ✅ Passwords never stored locally
-- ✅ HTTPS recommended for production
-- ✅ Token expiration handled gracefully
-- ✅ Input validation on all forms
-- ⚠️ Consider adding biometric authentication
-- ⚠️ Implement certificate pinning for production
-
-## 🚀 Future Enhancements
-
-- [ ] Receipt photo upload and OCR
-- [ ] Budget alerts and notifications
-- [ ] Recurring expenses/income
-- [ ] Multi-currency support
-- [ ] Export data to CSV/PDF
-- [ ] Biometric authentication
-- [ ] Dark mode theme
-- [ ] Offline mode with sync
-- [ ] Data backup to cloud
-- [ ] Expense categories customization
-
-## 📄 License
+## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 👨‍💻 Author
 
-**Seshathri**
-- GitHub: [@seshathri044](https://github.com/seshathri044)
-- Repository: [expense-tracker-frontend](https://github.com/seshathri044/expense-tracker-frontend)
-
-## 🔗 Related Projects
-
-- **Backend API**: [ExpenseTracker Spring Boot Backend](https://github.com/seshathri044/expense-tracker-backend)
-  - Spring Boot 3.x
-  - Spring Security with JWT
-  - MySQL Database
-  - RESTful API
-
-## 📞 Support
-
-If you encounter any issues or have questions:
-
-1. Check the [Troubleshooting](#-troubleshooting) section
-2. Review existing [Issues](https://github.com/seshathri044/expense-tracker-frontend/issues)
-3. Open a new issue with detailed information
-4. Contact: [Open an issue on GitHub]
+**Your Name**
+- GitHub: [@yourusername](https://github.com/yourusername)
+- LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourprofile)
+- Email: your.email@example.com
 
 ## 🙏 Acknowledgments
 
-- Flutter team for the amazing framework
-- Provider package maintainers
-- Spring Boot backend team
-- All contributors and supporters
+- Spring Boot Community
+- JWT.io for authentication guidance
+- MySQL Documentation
+- Stack Overflow Community
+
+## 📞 Support
+
+For support, email your.email@example.com or open an issue in the repository.
 
 ---
 
-**Built with ❤️ using Flutter & Spring Boot**
+<div align="center">
 
-⭐ Star this repo if you find it helpful!
+**⭐ Star this repository if you find it helpful!**
+
+Made with ❤️ and ☕
+
+</div>
