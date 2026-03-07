@@ -8,13 +8,9 @@
 .env.*.local
 *.env
 
-# Application specific properties with secrets
-application-local.properties
-application-*.local.properties
 # Spring environment-specific properties (may contain secrets)
 application-dev.properties
 application-prod.properties
-application-test.properties       # contains JWT secret
 
 # =========================
 # Build & Maven
