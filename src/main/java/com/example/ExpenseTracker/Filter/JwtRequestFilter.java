@@ -44,20 +44,36 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         "/auth/reset-password",
         "/auth/verify-otp",
         "/auth/send-otp",
-        "/auth/logout"
-        );
+        "/auth/logout",
+        "/test-email"
+    );
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
         String servletPath = request.getServletPath();
+        String requestURI = request.getRequestURI();
+        String contextPath = request.getContextPath();
 
-        log.debug("JwtRequestFilter: Processing request path: {}", servletPath);
+        // ✅ CRITICAL: Log at INFO level so you can always see what path arrives
+        log.info("JwtFilter => method={} contextPath='{}' servletPath='{}' requestURI='{}'",
+                request.getMethod(), contextPath, servletPath, requestURI);
 
-        // Skip JWT validation for public endpoints
-        if (PUBLIC_URLS.contains(servletPath)) {
-            log.debug("JwtRequestFilter: Public URL detected, skipping JWT validation: {}", servletPath);
+        // ✅ Check both servletPath AND a stripped version of requestURI as fallback
+        boolean isPublic = PUBLIC_URLS.contains(servletPath);
+
+        // Fallback: strip context path from requestURI and check again
+        if (!isPublic && requestURI != null) {
+            String strippedPath = requestURI.replace(contextPath, "");
+            isPublic = PUBLIC_URLS.contains(strippedPath);
+            if (isPublic) {
+                log.info("JwtFilter => Public URL matched via stripped requestURI: '{}'", strippedPath);
+            }
+        }
+
+        if (isPublic) {
+            log.info("JwtFilter => PUBLIC endpoint, skipping JWT check: '{}'", servletPath);
             filterChain.doFilter(request, response);
             return;
         }
@@ -69,7 +85,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         final String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
-            log.debug("JwtRequestFilter: JWT token found in Authorization header");
+            log.debug("JwtFilter => JWT found in Authorization header");
         }
 
         // 2. If not in header, check cookies
@@ -79,7 +95,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 for (Cookie cookie : cookies) {
                     if ("jwt".equals(cookie.getName())) {
                         jwt = cookie.getValue();
-                        log.debug("JwtRequestFilter: JWT token found in cookie");
+                        log.debug("JwtFilter => JWT found in cookie");
                         break;
                     }
                 }
@@ -90,7 +106,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (jwt != null) {
             try {
                 email = jwtUtil.extractEmail(jwt);
-                log.debug("JwtRequestFilter: Extracted email from JWT: {}", email);
+                log.debug("JwtFilter => Extracted email: {}", email);
 
                 if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     UserDetails userDetails = appUserDetialsService.loadUserByUsername(email);
@@ -98,24 +114,22 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     if (jwtUtil.validateToken(jwt, userDetails)) {
                         UsernamePasswordAuthenticationToken authenticationToken =
                                 new UsernamePasswordAuthenticationToken(
-                                        userDetails,
-                                        null,
-                                        userDetails.getAuthorities()
+                                        userDetails, null, userDetails.getAuthorities()
                                 );
                         authenticationToken.setDetails(
                                 new WebAuthenticationDetailsSource().buildDetails(request)
                         );
                         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                        log.debug("JwtRequestFilter: User authenticated successfully: {}", email);
+                        log.debug("JwtFilter => Authenticated: {}", email);
                     } else {
-                        log.warn("JwtRequestFilter: JWT validation failed for user: {}", email);
+                        log.warn("JwtFilter => JWT validation failed for: {}", email);
                     }
                 }
             } catch (Exception e) {
-                log.error("JwtRequestFilter: JWT validation error: {}", e.getMessage());
+                log.error("JwtFilter => JWT error: {}", e.getMessage());
             }
         } else {
-            log.debug("JwtRequestFilter: No JWT token found for protected endpoint: {}", servletPath);
+            log.warn("JwtFilter => No JWT found for PROTECTED path: '{}'", servletPath);
         }
 
         filterChain.doFilter(request, response);

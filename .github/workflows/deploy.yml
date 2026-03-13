@@ -47,12 +47,14 @@ jobs:
 
             sudo docker build -t expense-tracker-backend .
 
+            # ✅ CRITICAL FIX: Use 172.17.0.1 (Docker host IP) NOT localhost
+            # localhost inside Docker container = the container itself, NOT the EC2 host
             sudo docker run -d \
               --name expense-tracker-backend \
               --restart unless-stopped \
               -p 8080:8080 \
-              -e SPRING_DATASOURCE_URL="${{ secrets.DB_URL }}" \
-              -e SPRING_DATASOURCE_USERNAME="${{ secrets.DB_USERNAME }}" \
+              -e SPRING_DATASOURCE_URL="jdbc:mysql://172.17.0.1:3306/expensetracker?useSSL=false&serverTimezone=Asia/Kolkata&allowPublicKeyRetrieval=true" \
+              -e SPRING_DATASOURCE_USERNAME="root" \
               -e SPRING_DATASOURCE_PASSWORD="${{ secrets.DB_PASSWORD }}" \
               -e JWT_SECRET_KEY="${{ secrets.JWT_SECRET_KEY }}" \
               -e SPRING_MAIL_HOST="smtp-relay.brevo.com" \
@@ -67,3 +69,9 @@ jobs:
               expense-tracker-backend
 
             echo "✅ Deployment complete!"
+            
+            # ✅ Wait and verify container is actually running
+            sleep 10
+            sudo docker ps | grep expense-tracker-backend
+            echo "📋 Last 50 lines of logs:"
+            sudo docker logs --tail=50 expense-tracker-backend
