@@ -1,8 +1,7 @@
 package com.example.ExpenseTracker.SpringConfig;
 
-import com.example.ExpenseTracker.Filter.JwtRequestFilter;
-import com.example.ExpenseTracker.Service.AppUserDetialsService;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,7 +17,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.List;
+import com.example.ExpenseTracker.Filter.JwtRequestFilter;
+import com.example.ExpenseTracker.Service.AppUserDetialsService;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
@@ -45,7 +47,14 @@ public class SecurityConfig {
                                 "/send-otp",
                                 "/logout",
                                 "/is-authenticated",
-                                "/error"
+                                "/error",
+                                "/auth/login",
+                                "/auth/register",
+                                "/auth/send-reset-otp",
+                                "/auth/reset-password",
+                                "/auth/verify-otp",
+                                "/auth/send-otp",
+                                "/auth/logout"
                         ).permitAll()
                         // Swagger UI endpoints
                         .requestMatchers(
