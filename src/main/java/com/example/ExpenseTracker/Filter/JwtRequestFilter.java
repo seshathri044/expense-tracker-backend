@@ -29,16 +29,23 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
 
     private static final List<String> PUBLIC_URLS = Arrays.asList(
-            "/login",
-            "/register",
-            "/send-reset-otp",
-            "/reset-password",
-            "/verify-otp",
-            "/send-otp",
-            "/logout",
-            "/is-authenticated",
-            "/error"
-    );
+        "/login",
+        "/register",
+        "/send-reset-otp",
+        "/reset-password",
+        "/verify-otp",
+        "/send-otp",
+        "/logout",
+        "/is-authenticated",
+        "/error",
+        "/auth/login",
+        "/auth/register",
+        "/auth/send-reset-otp",
+        "/auth/reset-password",
+        "/auth/verify-otp",
+        "/auth/send-otp",
+        "/auth/logout"
+        );
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
