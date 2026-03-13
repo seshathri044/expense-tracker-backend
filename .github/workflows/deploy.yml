@@ -41,12 +41,13 @@ jobs:
           script: |
             cd /home/ubuntu/app
 
-            docker stop expense-tracker-backend || true
-            docker rm expense-tracker-backend || true
+            sudo docker stop expense-tracker-backend || true
+            sudo docker rm expense-tracker-backend || true
+            sudo docker rmi expense-tracker-backend || true
 
-            docker build -t expense-tracker-backend .
+            sudo docker build -t expense-tracker-backend .
 
-            docker run -d \
+            sudo docker run -d \
               --name expense-tracker-backend \
               --restart unless-stopped \
               -p 8080:8080 \
@@ -54,8 +55,12 @@ jobs:
               -e SPRING_DATASOURCE_USERNAME="${{ secrets.DB_USERNAME }}" \
               -e SPRING_DATASOURCE_PASSWORD="${{ secrets.DB_PASSWORD }}" \
               -e JWT_SECRET_KEY="${{ secrets.JWT_SECRET_KEY }}" \
+              -e SPRING_MAIL_HOST="smtp-relay.brevo.com" \
+              -e SPRING_MAIL_PORT="587" \
               -e SPRING_MAIL_USERNAME="${{ secrets.MAIL_USERNAME }}" \
               -e SPRING_MAIL_PASSWORD="${{ secrets.MAIL_PASSWORD }}" \
+              -e SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH="true" \
+              -e SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE="true" \
               -e SPRING_MAIL_PROPERTIES_MAIL_SMTP_FROM="${{ secrets.MAIL_FROM }}" \
               -e SPRING_PROFILES_ACTIVE="prod" \
               -e SERVER_PORT="8080" \
