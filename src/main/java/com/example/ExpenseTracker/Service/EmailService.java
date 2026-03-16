@@ -1,11 +1,12 @@
 package com.example.ExpenseTracker.Service;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -64,14 +65,8 @@ public class EmailService {
                         "We’re excited to have you onboard. From now on, you can easily track your expenses, manage your budget, and take full control of your finances with confidence.\n\n" +
                         "If you have any questions or need assistance, our team is here to help you anytime.\n\n" +
                         "Best regards,\n" +
-                        "Team Vyugam Solutions\n\n" +
+                        "Seshathri\n\n" +
                         "------------------------------------------------------\n" +
-                        "VYUGAM SOLUTIONS\n" +
-                        "Vyugam is one of the best software solutions in Hosur, providing cutting-edge technology for modern businesses.\n\n" +
-                        "📍 Address: 2nd Floor, 647/1A, KVM Towers, Bangalore Road, Hosur, Tamil Nadu – 635109\n" +
-                        "📞 Phone: +91-9159585656 | +91-8489403864\n" +
-                        "📧 Email: info@vyugamsolutions.com\n\n" +
-                        "---\n" +
                         "This is an automated email. Please do not reply to this email.",
                 name
         );
@@ -85,7 +80,7 @@ public class EmailService {
                         "This OTP will expire in 10 minutes for security reasons.\n\n" +
                         "If you did not request this password reset, please ignore this email and your password will remain unchanged.\n\n" +
                         "Best regards,\n" +
-                        "Vyugam Solutions Team\n\n" +
+                        "Seshathri\n\n" +
                         "---\n" +
                         "This is an automated email. Please do not reply to this email.",
                 otp
@@ -104,7 +99,7 @@ public class EmailService {
                         "Please enter this code to complete your account verification and get started with managing your expenses.\n\n" +
                         "If you did not create an account with us, please ignore this email.\n\n" +
                         "Best regards,\n" +
-                        "Vyugam Solutions Team\n\n" +
+                        "Seshathri\n\n" +
                         "---\n" +
                         "This is an automated email. Please do not reply to this email."
         );
