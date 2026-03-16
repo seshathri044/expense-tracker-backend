@@ -39,23 +39,39 @@ public class SecurityConfig {
                         // ✅ CRITICAL FIX: Export endpoints WITHOUT /api prefix
                         // Since context path is /api, Spring Security sees paths as /export/csv
                         .requestMatchers(
-                                "/login",
-                                "/register",
-                                "/send-reset-otp",
-                                "/reset-password",
-                                "/verify-otp",
-                                "/send-otp",
-                                "/logout",
-                                "/is-authenticated",
-                                "/error",
-                                "/auth/login",
-                                "/auth/register",
-                                "/auth/send-reset-otp",
-                                "/auth/reset-password",
-                                "/auth/verify-otp",
-                                "/auth/send-otp",
-                                "/auth/logout"
-                        ).permitAll()
+        "/login",
+        "/register",
+        "/send-reset-otp",
+        "/reset-password",
+        "/verify-otp",
+        "/send-otp",
+        "/logout",
+        "/is-authenticated",
+        "/error",
+        "/auth/login",
+        "/auth/register",
+        "/auth/send-reset-otp",
+        "/auth/reset-password",
+        "/auth/verify-otp",
+        "/auth/send-otp",
+        "/auth/logout",
+        // ✅ ADD THESE — context path is '/' so Spring Security sees full /api/ path
+        "/api/login",
+        "/api/register",
+        "/api/send-reset-otp",
+        "/api/reset-password",
+        "/api/verify-otp",
+        "/api/send-otp",
+        "/api/logout",
+        "/api/is-authenticated",
+        "/api/auth/login",
+        "/api/auth/register",
+        "/api/auth/send-reset-otp",
+        "/api/auth/reset-password",
+        "/api/auth/verify-otp",
+        "/api/auth/send-otp",
+        "/api/auth/logout"
+).permitAll()
                         // Swagger UI endpoints
                         .requestMatchers(
                                 "/swagger-ui/**",
