@@ -29,23 +29,23 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
 
     private static final List<String> PUBLIC_URLS = Arrays.asList(
-        "/login",
-        "/register",
-        "/send-reset-otp",
-        "/reset-password",
-        "/verify-otp",
-        "/send-otp",
-        "/logout",
-        "/is-authenticated",
-        "/error",
-        "/auth/login",
-        "/auth/register",
-        "/auth/send-reset-otp",
-        "/auth/reset-password",
-        "/auth/verify-otp",
-        "/auth/send-otp",
-        "/auth/logout",
-        "/test-email"
+            "/login",
+            "/register",
+            "/send-reset-otp",
+            "/reset-password",
+            "/verify-otp",
+            "/send-otp",
+            "/logout",
+            "/is-authenticated",
+            "/error",
+            "/test-email",
+            "/auth/login",
+            "/auth/register",
+            "/auth/send-reset-otp",
+            "/auth/reset-password",
+            "/auth/verify-otp",
+            "/auth/send-otp",
+            "/auth/logout"
     );
 
     @Override
@@ -53,27 +53,22 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String servletPath = request.getServletPath();
-        String requestURI = request.getRequestURI();
-        String contextPath = request.getContextPath();
 
-        // ✅ CRITICAL: Log at INFO level so you can always see what path arrives
-        log.info("JwtFilter => method={} contextPath='{}' servletPath='{}' requestURI='{}'",
-                request.getMethod(), contextPath, servletPath, requestURI);
-
-        // ✅ Check both servletPath AND a stripped version of requestURI as fallback
-        boolean isPublic = PUBLIC_URLS.contains(servletPath);
-
-        // Fallback: strip context path from requestURI and check again
-        if (!isPublic && requestURI != null) {
-            String strippedPath = requestURI.replace(contextPath, "");
-            isPublic = PUBLIC_URLS.contains(strippedPath);
-            if (isPublic) {
-                log.info("JwtFilter => Public URL matched via stripped requestURI: '{}'", strippedPath);
-            }
+        // ✅ CORE FIX: Strip /api prefix because context-path is not applied
+        // inside Docker — servletPath comes in as '/api/register' not '/register'
+        String normalizedPath = servletPath;
+        if (normalizedPath.startsWith("/api/")) {
+            normalizedPath = normalizedPath.substring(4); // "/api/register" → "/register"
+        } else if (normalizedPath.equals("/api")) {
+            normalizedPath = "/";
         }
 
-        if (isPublic) {
-            log.info("JwtFilter => PUBLIC endpoint, skipping JWT check: '{}'", servletPath);
+        log.info("JwtFilter => method={} servletPath='{}' normalizedPath='{}'",
+                request.getMethod(), servletPath, normalizedPath);
+
+        // Check normalized path against public URLs
+        if (PUBLIC_URLS.contains(normalizedPath)) {
+            log.info("JwtFilter => PUBLIC endpoint, skipping JWT check: '{}'", normalizedPath);
             filterChain.doFilter(request, response);
             return;
         }
@@ -106,7 +101,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (jwt != null) {
             try {
                 email = jwtUtil.extractEmail(jwt);
-                log.debug("JwtFilter => Extracted email: {}", email);
 
                 if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     UserDetails userDetails = appUserDetialsService.loadUserByUsername(email);
@@ -129,7 +123,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 log.error("JwtFilter => JWT error: {}", e.getMessage());
             }
         } else {
-            log.warn("JwtFilter => No JWT found for PROTECTED path: '{}'", servletPath);
+            log.warn("JwtFilter => No JWT for PROTECTED path: '{}'", normalizedPath);
         }
 
         filterChain.doFilter(request, response);
