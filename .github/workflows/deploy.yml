@@ -51,15 +51,15 @@ jobs:
               --name expense-tracker-backend \
               --restart unless-stopped \
               -p 8080:8080 \
-              -e DB_URL="jdbc:mysql://172.17.0.1:3306/expensetracker?useSSL=false&serverTimezone=Asia/Kolkata&allowPublicKeyRetrieval=true" \
-              -e DB_USERNAME="root" \
-              -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
+              -e SPRING_DATASOURCE_URL="jdbc:mysql://172.17.0.1:3306/expensetracker?useSSL=false&serverTimezone=Asia/Kolkata&allowPublicKeyRetrieval=true" \
+              -e SPRING_DATASOURCE_USERNAME="root" \
+              -e SPRING_DATASOURCE_PASSWORD="${{ secrets.DB_PASSWORD }}" \
               -e JWT_SECRET_KEY="${{ secrets.JWT_SECRET_KEY }}" \
-              -e MAIL_USERNAME="${{ secrets.MAIL_USERNAME }}" \
-              -e MAIL_PASSWORD="${{ secrets.MAIL_PASSWORD }}" \
-              -e MAIL_FROM="${{ secrets.MAIL_FROM }}" \
               -e SPRING_MAIL_HOST="smtp-relay.brevo.com" \
               -e SPRING_MAIL_PORT="587" \
+              -e SPRING_MAIL_USERNAME="${{ secrets.MAIL_USERNAME }}" \
+              -e SPRING_MAIL_PASSWORD="${{ secrets.MAIL_PASSWORD }}" \
+              -e SPRING_MAIL_FROM="${{ secrets.MAIL_FROM }}" \
               -e SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH="true" \
               -e SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE="true" \
               -e SPRING_PROFILES_ACTIVE="prod" \
@@ -67,8 +67,7 @@ jobs:
               expense-tracker-backend
 
             echo "✅ Deployment complete!"
-
-            sleep 10
+            sleep 15
             sudo docker ps | grep expense-tracker-backend
-            echo "📋 Last 50 lines of logs:"
-            sudo docker logs --tail=50 expense-tracker-backend
+            echo "📋 Last 30 lines of logs:"
+            sudo docker logs --tail=30 expense-tracker-backend
