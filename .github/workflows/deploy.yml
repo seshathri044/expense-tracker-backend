@@ -55,11 +55,10 @@ jobs:
               -e SPRING_DATASOURCE_USERNAME="root" \
               -e SPRING_DATASOURCE_PASSWORD="${{ secrets.DB_PASSWORD }}" \
               -e JWT_SECRET_KEY="${{ secrets.JWT_SECRET_KEY }}" \
-              -e SPRING_MAIL_USERNAME="${{ secrets.MAIL_USERNAME }}" \
-              -e SPRING_MAIL_PASSWORD="${{ secrets.MAIL_PASSWORD }}" \
-              -e SPRING_MAIL_FROM="${{ secrets.MAIL_FROM }}" \
               -e SPRING_MAIL_HOST="smtp-relay.brevo.com" \
               -e SPRING_MAIL_PORT="587" \
+              -e SPRING_MAIL_USERNAME="${{ secrets.MAIL_USERNAME }}" \
+              -e SPRING_MAIL_PASSWORD="${{ secrets.MAIL_PASSWORD }}" \
               -e SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH="true" \
               -e SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE="true" \
               -e SPRING_PROFILES_ACTIVE="prod" \
