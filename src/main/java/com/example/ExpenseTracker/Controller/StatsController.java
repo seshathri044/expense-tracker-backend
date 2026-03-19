@@ -21,7 +21,6 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/stats")
-@CrossOrigin(origins = "*")
 public class StatsController {
 
     private final StatsService statsService;
