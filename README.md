@@ -15,6 +15,9 @@
 
 [![Download APK](https://img.shields.io/github/v/release/seshathri044/expense-tracker-backend?label=Download%20APK&logo=android&logoColor=white&color=3DDC84)](https://github.com/seshathri044/expense-tracker-backend/releases/latest)
 
+> **Frontend Repository**: [expense-tracker-frontend](https://github.com/seshathri044/expense-tracker-frontend)
+
+
 </div>
 
 ---
